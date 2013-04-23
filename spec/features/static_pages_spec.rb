@@ -1,39 +1,41 @@
 require 'spec_helper'
 
-describe "StaticPages" do
+feature "StaticPages" do
+  let(:same_title) { "Ruby on Rails Tutorial App | " }
   context "Home page" do
-    it "should have content 'Tutorial App'" do
+    scenario "have content 'Tutorial App'" do
       visit '/static_pages/home'
-      page.should have_selector('h1', 'Tutorial App')
+      #page.should have_selector('h1', 'Tutorial App')
+      expect(page).to have_selector('h1', 'Tutorial App')
     end
 
-    it "should have the right title" do
+    scenario "have the right tscenariole" do
       visit "/static_pages/home"
-      page.should have_title("Ruby on Rails Tutorial App | Home")
+      expect(page).to have_title("#{same_title}Home")
     end
   end
 
   context "Help Page" do
-    it "should have content 'Help'" do
+    scenario "have content 'Help'" do
       visit '/static_pages/help'
-      page.should have_selector('h1', 'Help')
+      expect(page).to have_selector('h1', 'Help')
     end
 
-    it "should have the right title" do
+    scenario "have the right title" do
       visit "/static_pages/help"
-      page.should have_title("Ruby on Rails Tutorial App | Help")
+      expect(page).to have_title("#{same_title}Help")
     end
   end
 
   context "About Page" do
-    it "should have content 'About Us'" do
+    scenario "have content 'About Us'" do
       visit '/static_pages/about'
-      page.should have_selector('h1', 'About Us')
+      expect(page).to have_selector('h1', 'About Us')
     end
 
-    it "should have the right title" do
+    scenario "have the right title" do
       visit "/static_pages/about"
-      page.should have_title("Ruby on Rails Tutorial App | About")
+      expect(page).to have_title("#{same_title}About")
     end
   end
 end
