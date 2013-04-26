@@ -1,7 +1,6 @@
 require 'spec_helper'
 
 feature "StaticPages" do
-  let(:base_title) { "Ruby on Rails Tutorial App" }
   context "Home page" do
     background { visit root_path }
     scenario "have the h1 'Tutorial App'" do
@@ -10,7 +9,7 @@ feature "StaticPages" do
     end
 
     scenario "have the base title" do
-      expect(page).to have_title(base_title)
+      expect(page).to have_title(full_title(''))
     end
 
     scenario "have not a custom title" do
@@ -19,13 +18,13 @@ feature "StaticPages" do
   end
 
   context "Help Page" do
-    background { visit help_path}
+    background { visit help_path }
     scenario "have the h1 'Help'" do
       expect(page).to have_selector('h1', 'Help')
     end
 
     scenario "have the title 'Help'" do
-      expect(page).to have_title("#{base_title} | Help")
+      expect(page).to have_title(full_title("Help"))
     end
   end
 
@@ -36,7 +35,7 @@ feature "StaticPages" do
     end
 
     scenario "have the title 'About'" do
-      expect(page).to have_title("#{base_title} | About")
+      expect(page).to have_title(full_title("About"))
     end
   end
 
@@ -47,7 +46,7 @@ feature "StaticPages" do
     end
 
     scenario "have the title 'Contact'" do
-      expect(page).to have_title("#{base_title} | Contact")
+      expect(page).to have_title(full_title("Contact"))
     end
   end
 end
