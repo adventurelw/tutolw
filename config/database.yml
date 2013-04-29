@@ -1,8 +1,10 @@
 development:
-  adapter: sqlite3
-  database: db/development.sqlite3
+  adapter: postgresql
+  encoding: unicode
+  database: tutolw_dev
   pool: 5
-  timeout: 5000
+  username: tutolw
+  password: tutolw6
 
 test:
   adapter: sqlite3
