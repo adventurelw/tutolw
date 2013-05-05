@@ -4,6 +4,7 @@ gem 'rails', '3.2.12'
 gem 'bootstrap-sass', '2.3.1.0'
 gem 'bcrypt-ruby', '3.0.1'
 gem 'haml-rails', '0.4'
+gem 'strong_parameters', '0.2.0'
 
 group :development, :test do
   gem 'rspec-rails', '2.13.0'
