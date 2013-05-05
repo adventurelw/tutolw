@@ -22,6 +22,7 @@ gem 'jquery-rails', '2.2.1'
 group :test do
   gem 'sqlite3', '1.3.7'
   gem 'capybara', '2.1.0'
+  gem 'factory_girl_rails', '4.2.1'
 end
 
 group :development, :production do

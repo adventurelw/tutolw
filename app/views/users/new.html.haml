@@ -1,3 +1,15 @@
 - provide(:title, "Sign up")
 %h1 Sign up
-%p This is the page for 'Sign up'
+.row
+  .span6.offset3
+    = form_for(@user) do |f|
+      = render "shared/error_messages"
+      = f.label :name
+      = f.text_field :name
+      = f.label :email
+      = f.text_field :email
+      = f.label :password
+      = f.password_field :password
+      = f.label :password_confirmation, "Confirmation"
+      = f.password_field :password_confirmation
+      = f.submit "注册账户", class: "btn btn-large btn-primary"
