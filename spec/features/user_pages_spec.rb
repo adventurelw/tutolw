@@ -20,14 +20,25 @@ feature "User Pages" do
         expect { click_button submit }.to_not change { User.count }
       end
 
-      scenario "create a user with valid information" do
-        #都是form表单的文本标签，首字母大写
-        fill_in "Name", with: "Lavin"
-        fill_in "Email", with: "lavin@gmail.com"
-        fill_in "Password", with: "foobar"
-        fill_in "Confirmation", with: "foobar"
+      context "with valid information" do
+        given(:user) { User.find_by_email("lavin@gmail.com") }
+        before do
+           #都是form表单的文本标签，首字母大写
+          fill_in "Name", with: "Lavin"
+          fill_in "Email", with: "lavin@gmail.com"
+          fill_in "Password", with: "foobar"
+          fill_in "Confirmation", with: "foobar"
+        end
+        scenario "create a user sccessfully" do
+          expect { click_button submit }.to change { User.count }.by(1)
+        end
 
-        expect { click_button submit }.to change { User.count }.by(1)
+        scenario "after saving the user" do
+          click_button submit
+          expect(page).to have_title(user.name)
+          expect(page).to have_selector("div.alert.alert-success",
+                                        text: "Great!!!!!")
+        end
       end
     end
   end
