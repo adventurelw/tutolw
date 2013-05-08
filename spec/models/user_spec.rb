@@ -30,6 +30,10 @@ describe User do
     it "have 'authenticate'" do
       expect(subject).to respond_to(:authenticate)
     end
+
+    it "have 'remember_token'" do
+      expect(subject).to respond_to(:remember_token)
+    end
   end
 
 
@@ -119,6 +123,13 @@ describe User do
       user_for_invalid_password = found_user.authenticate("invalid")
       expect(subject).to_not eq(user_for_invalid_password)
       expect(user_for_invalid_password).to be_false
+    end
+  end
+
+  context "remember_token" do
+    it "cannot be blank" do
+      subject.save
+      expect(subject.remember_token).to_not be_blank
     end
   end
 end

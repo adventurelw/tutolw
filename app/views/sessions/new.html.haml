@@ -1,0 +1,14 @@
+- provide(:title, "Sign in")
+%h1 Sign in
+.row
+  .span6.offset3
+    = form_tag(sessions_path, method: :post) do
+      = label_tag "session[email]", "Email"
+      = email_field_tag "session[email]"
+      %br/
+      = label_tag "session[password]", "Password"
+      = password_field_tag "session[password]"
+      = submit_tag "登录", class: "btn btn-large btn-primary"
+    %p
+      没有账户?&nbsp;&nbsp;&nbsp;
+      = link_to "Sign up now!", signin_path
