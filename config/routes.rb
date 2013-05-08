@@ -1,10 +1,13 @@
 Tutolw::Application.routes.draw do
   resources :users
+  resources :sessions, only: [:new, :create, :destroy]
   match '/help' => 'static_pages#help', via: :get
   match '/about' => 'static_pages#about', via: :get
   match '/contact' => 'static_pages#contact', via: :get
 
   match '/signup' => 'users#new', via: :get
+  match '/signin' => 'sessions#new', via: :get
+  match '/signout' => 'sessions#destroy', via: :delete
 
   # The priority is based upon order of creation:
   # first created -> highest priority.
