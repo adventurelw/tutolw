@@ -1,7 +1,8 @@
 module UsersHelper
-  def gravatar_for(user, size: 50)
+  #去掉size属性，以适应1.9的语法。
+  def gravatar_for(user)
     gravatar_id = Digest::MD5::hexdigest(user.email.downcase)
-    gravatar_url = "https://secure.gravatar.com/avatar/#{gravatar_id}.png?s=#{size}"
+    gravatar_url = "https://secure.gravatar.com/avatar/#{gravatar_id}"
     image_tag(gravatar_url, alt: user.name, class: "gravatar")
   end
 end
