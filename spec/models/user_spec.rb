@@ -34,6 +34,10 @@ describe User do
     it "have 'remember_token'" do
       expect(subject).to respond_to(:remember_token)
     end
+
+    it "have 'admin'" do
+      expect(subject).to respond_to(:admin)
+    end
   end
 
 
@@ -130,6 +134,13 @@ describe User do
     it "cannot be blank" do
       subject.save
       expect(subject.remember_token).to_not be_blank
+    end
+  end
+
+  context "set 'admin' attr to true" do
+    it 'is admin' do
+      subject.toggle!(:admin)
+      expect(subject).to be_admin
     end
   end
 end
