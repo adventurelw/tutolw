@@ -38,6 +38,10 @@ describe User do
     it "have 'admin'" do
       expect(subject).to respond_to(:admin)
     end
+
+    it 'have microposts' do
+      expect(subject).to respond_to(:microposts)
+    end
   end
 
 
@@ -141,6 +145,47 @@ describe User do
     it 'is admin' do
       subject.toggle!(:admin)
       expect(subject).to be_admin
+    end
+  end
+
+  context 'micropost associations' do
+    before { subject.save }
+    let!(:old_micropost)  do
+      FactoryGirl.create(:micropost, user: subject, created_at: 1.day.ago)
+    end
+    let!(:new_micropost) do
+      FactoryGirl.create(:micropost, user: subject, created_at: 1.hour.ago)
+    end
+
+    it 'have right microposts in the right order' do
+      expect(subject.microposts).to eq([new_micropost, old_micropost])
+    end
+
+    it 'destroy associated microposts' do
+      microposts = subject.microposts.dup
+      subject.destroy
+      expect(microposts).to_not be_empty
+      microposts.each do |micropost|
+        expect(Micropost.find_by_id(micropost.id)).to be_nil
+      end
+    end
+
+    context 'status' do
+      let!(:unfollowed_post) do
+        FactoryGirl.create(:micropost, user: FactoryGirl.create(:user))
+      end
+
+      it 'include old_micropost' do
+        expect(subject.feed).to include(old_micropost)
+      end
+
+      it 'include new_micropost' do
+        expect(subject.feed).to include(new_micropost)
+      end
+
+      it 'do not include unfollowed_post' do
+        expect(subject.feed).to_not include(unfollowed_post)
+      end
     end
   end
 end

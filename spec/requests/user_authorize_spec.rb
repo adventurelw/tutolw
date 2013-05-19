@@ -3,9 +3,21 @@ require 'spec_helper'
 describe "User authorize" do
   let(:user) { FactoryGirl.create(:user) }
   context "for non-signed-in users" do
-    it "submitting to update action" do
+    it "submitting to the update action" do
       put user_path(user)
       expect(response).to redirect_to(signin_path)
+    end
+
+    context 'in the Microposts controller' do
+      it 'submitting to the create action' do
+        post microposts_path
+        expect(response).to redirect_to(signin_path)
+      end
+
+      it 'submitting to the destroy action' do
+        delete micropost_path(FactoryGirl.create(:micropost))
+        expect(response).to redirect_to(signin_path)
+      end
     end
   end
 

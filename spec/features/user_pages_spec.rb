@@ -39,6 +39,8 @@ feature "User Pages" do
 
   context "profile page" do
     given(:user) { FactoryGirl.create(:user) }
+    given!(:m1) { FactoryGirl.create(:micropost, user: user, content: 'Bar') }
+    given!(:m2) { FactoryGirl.create(:micropost, user: user, content: 'Far') }
     background { visit user_path(user) }
     scenario "have the h1 user.name" do
       expect(page).to have_selector('h1', text: user.name)
@@ -46,6 +48,21 @@ feature "User Pages" do
 
     scenario "have the title user.name" do
       expect(page).to have_title(user.name)
+    end
+
+    context 'microposts' do
+      scenario 'have m1 content' do
+        expect(page).to have_content(m1.content)
+      end
+
+
+      scenario 'have m2 content' do
+        expect(page).to have_content(m2.content)
+      end
+
+      scenario 'have micropost count' do
+        expect(page).to have_content(user.microposts.count)
+      end
     end
   end
 
