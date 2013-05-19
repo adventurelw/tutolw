@@ -59,4 +59,36 @@ feature "StaticPages" do
     given(:page_title) { 'Contact' }
     it_behaves_like "all static pages"
   end
+
+
+  context 'for signed-in user' do
+    given(:user) { FactoryGirl.create(:user) }
+    background do
+      FactoryGirl.create(:micropost, user: user, content: 'like you')
+      valid_sign_in user
+    end
+
+    context "render user's feed" do
+      context 'get correct microposts count' do
+        it 'have 1 micropost' do
+          visit root_path
+          expect(page).to have_content('1 micropost')
+        end
+
+        it 'have 2 microposts' do
+          FactoryGirl.create(:micropost, user: user, content: 'love you')
+          visit root_path
+          expect(page).to have_content('2 microposts')
+        end
+      end
+
+      scenario 'have li#item.id content' do
+        FactoryGirl.create(:micropost, user: user, content: 'love you')
+        visit root_path
+        user.feed.each do |item|
+          expect(page).to have_selector("li##{ item.id }", text: item.content)
+        end
+      end
+    end
+  end
 end

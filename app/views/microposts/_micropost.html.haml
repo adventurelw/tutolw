@@ -1,0 +1,6 @@
+%li
+  %span.content= wrap(micropost.content)
+  %span.timestamp
+    = time_ago_in_words(micropost.created_at)
+    以前发表
+  = render 'shared/delete_link', micropost: micropost

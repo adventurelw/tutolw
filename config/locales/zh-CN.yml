@@ -1,7 +1,58 @@
 zh-CN:
+  datetime:
+    distance_in_words:
+      half_a_minute: "半分钟"
+      less_than_x_seconds:
+        one:   "不到1秒钟"
+        other: "不到%{count}秒钟"
+      x_seconds:
+        one:   "1秒钟"
+        other: "%{count}秒钟"
+      less_than_x_minutes:
+        one:   "不到1分钟"
+        other: "不到%{count}分钟"
+      x_minutes:
+        one:   "1分钟"
+        other: "%{count}分钟"
+      about_x_hours:
+        one:   "约1小时"
+        other: "约%{count}小时"
+      x_days:
+        one:   "1天"
+        other: "%{count}天"
+      about_x_months:
+        one:   "大约1个月"
+        other: "大约%{count}个月"
+      x_months:
+        one:   "1个月"
+        other: "%{count}个月"
+      about_x_years:
+        one:   "大约1年"
+        other: "约%{count}年"
+      over_x_years:
+        one:   "超过1年"
+        other: "超过%{count}年"
+      almost_x_years:
+        one:   "几乎一年"
+        other: "几乎%{count}年"
+    prompts:
+      year:   "年"
+      month:  "月"
+      day:    "日"
+      hour:   "小时"
+      minute: "分"
+      second: "秒"
   activerecord:
     attributes:
       user:
         name: "用户名"
         email: "邮箱"
         password_digest: "密码"
+      micropost:
+        content: '内容'
+    errors:
+      models:
+        micropost:
+          attributes:
+            content:
+              blank: '不能为空'

@@ -8,4 +8,9 @@ FactoryGirl.define do
       admin true
     end
   end
+
+  factory :micropost do
+    content 'Lalalala'
+    user
+  end
 end
