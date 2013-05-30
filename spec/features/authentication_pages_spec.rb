@@ -98,6 +98,20 @@ feature "Authentication" do
           expect(page).to have_title("Sign in")
         end
       end
+
+      context 'visiting following page' do
+        scenario 'redirect to sign in page' do
+          visit following_user_path(user)
+          expect(page).to have_title('Sign in')
+        end
+      end
+
+      context 'visiting followers page' do
+        scenario 'redirect to sign in page' do
+          visit followers_user_path(user)
+          expect(page).to have_title('Sign in')
+        end
+      end
     end
 
     context "as wrong user" do

@@ -42,6 +42,22 @@ describe User do
     it 'have microposts' do
       expect(subject).to respond_to(:microposts)
     end
+
+    it 'have followed_users' do
+      expect(subject).to respond_to(:followed_users)
+    end
+
+    it 'have followers' do
+      expect(subject).to respond_to(:followers)
+    end
+
+    it 'have follow! method' do
+      expect(subject).to respond_to(:follow!)
+    end
+
+    it 'have following? method' do
+      expect(subject).to respond_to(:following?)
+    end
   end
 
 
@@ -171,9 +187,10 @@ describe User do
     end
 
     context 'status' do
-      let!(:unfollowed_post) do
+      let(:unfollowed_post) do
         FactoryGirl.create(:micropost, user: FactoryGirl.create(:user))
       end
+      let(:followed_user) { FactoryGirl.create(:user) }
 
       it 'include old_micropost' do
         expect(subject.feed).to include(old_micropost)
@@ -185,6 +202,56 @@ describe User do
 
       it 'do not include unfollowed_post' do
         expect(subject.feed).to_not include(unfollowed_post)
+      end
+
+      it "include followed_user's microposts" do
+        subject.follow!(followed_user)
+        3.times { followed_user.microposts.create!(content: 'Lorem ipsum') }
+        followed_user.microposts.each do |micropost|
+          expect(subject.feed).to include(micropost)
+        end
+      end
+    end
+  end
+
+  context 'following' do
+    let(:other_user) { FactoryGirl.create(:user) }
+    before do
+      subject.save
+      subject.follow!(other_user)
+    end
+
+    it 'is following?' do
+      expect(subject).to be_following(other_user)
+    end
+
+    it 'followed_users include other_user' do
+      expect(subject.followed_users).to include(other_user)
+    end
+
+    it 'unfollow a followed_user' do
+      subject.unfollow!(other_user)
+      expect(subject.followed_users).to_not include(other_user)
+    end
+
+    context 'followed_user' do
+      it 'have folloers' do
+        expect(other_user.followers).to include(subject)
+      end
+    end
+
+    it 'destroy associated relationships' do
+      other_user.follow!(subject)
+      relationships = subject.relationships.dup
+      reverse_relationships = subject.reverse_relationships.dup
+      subject.destroy
+      expect(relationships).to_not be_empty
+      expect(reverse_relationships).to_not be_empty
+      relationships.each do |r|
+        expect(Relationship.find_by_id(r.id)).to be_nil
+      end
+      reverse_relationships.each do |rr|
+        expect(Relationship.find_by_id(rr.id)).to be_nil
       end
     end
   end
