@@ -19,6 +19,18 @@ describe "User authorize" do
         expect(response).to redirect_to(signin_path)
       end
     end
+
+    context 'in the Relationships controller' do
+      it 'submitting to the create action' do
+        post relationships_path
+        expect(response).to redirect_to(signin_path)
+      end
+
+      it 'submitting to the destroy action' do
+        delete relationship_path(1)
+        expect(response).to redirect_to(signin_path)
+      end
+    end
   end
 
   context 'as signed-in user' do

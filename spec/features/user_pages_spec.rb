@@ -64,6 +64,49 @@ feature "User Pages" do
         expect(page).to have_content(user.microposts.count)
       end
     end
+
+    context 'follow/unfollow buttons' do
+      given(:other_user) { FactoryGirl.create(:user) }
+      background { valid_sign_in user }
+
+      context 'following a user' do
+        scenario 'increment the followed user count' do
+          expect do
+            click_button 'Follow'
+          end.to change { user.followed_users.count }.by(1)
+        end
+
+        scenario 'increment the follower count' do
+          expect do
+            click_button 'Follow'
+          end.to change { other_user.followers.count }.by(1)
+        end
+
+        scenario 'togging the button' do
+          click_button 'Follow'
+          expect(page).to have_selector('input', value: 'Unfollow')
+        end
+      end
+
+      context 'unfollowing a user' do
+        scenario 'decrement the followed user count' do
+          expect do
+            click_button 'Unfollow'
+          end.to change { user.followed_users.count }.by(-1)
+        end
+
+        scenario 'decrement the follower count' do
+          expect do
+            click_button 'Unfollow'
+          end.to change { other_user.followers.count }.by(-1)
+        end
+
+        scenario 'togging the button' do
+          click_button 'Unfollow'
+          expect(page).to have_selector('input', value: 'Follow')
+        end
+      end
+    end
   end
 
   context "edit user" do
@@ -182,5 +225,48 @@ feature "User Pages" do
     end
 
     after(:all) { User.delete_all }
+  end
+
+  context 'following/followers' do
+    given(:user) { FactoryGirl.create(:user) }
+    given(:other_user) { FactoryGirl.create(:user) }
+    background { user.follow!(other_user) }
+    context 'followed users' do
+      background do
+        valid_sign_in user
+        visit following_user_path(user)
+      end
+
+      scenario 'have title' do
+        expect(page).to have_title(full_title('Following'))
+      end
+
+      scenario 'have h3 selector' do
+        expect(page).to have_selector('h3', text: 'Following')
+      end
+
+      scenario 'have followed_user link' do
+        expect(page).to have_link(other_user.name, href: user_path(other_user))
+      end
+    end
+
+    context 'followers' do
+      background do
+        valid_sign_in other_user
+        visit followers_user_path(other_user)
+      end
+
+      scenario 'have title' do
+        expect(page).to have_title(full_title('Followers'))
+      end
+
+      scenario 'have h3 selector' do
+        expect(page).to have_selector('h3', text: 'Followers')
+      end
+
+      scenario 'have follower link' do
+        expect(page).to have_link(user.name, href: user_path(user))
+      end
+    end
   end
 end

@@ -90,5 +90,21 @@ feature "StaticPages" do
         end
       end
     end
+
+    context 'follower/following counts' do
+      given(:other_user) { FactoryGirl.create(:user) }
+      background do
+        other_user.follow!(user)
+        visit root_path
+      end
+
+      scenario 'user have 0 following' do
+        expect(page).to have_link('0 following', href: following_user_path(user))
+      end
+
+      scenario 'user have 1 follower' do
+        expect(page).to have_link('1 followers', href: followers_user_path(user))
+      end
+    end
   end
 end

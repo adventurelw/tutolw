@@ -3,5 +3,6 @@
   .field
     = f.text_area :content,
                   placeholder: 'Compose new micropost.....',
-                  rows: 10
+                  size: '30x10',
+                  style: 'height: 100px;'
   = f.submit 'Post', class: 'btn btn-large btn-primary'
