@@ -178,7 +178,7 @@ describe User do
     end
 
     it 'destroy associated microposts' do
-      microposts = subject.microposts.dup
+      microposts = subject.microposts.to_a
       subject.destroy
       expect(microposts).to_not be_empty
       microposts.each do |micropost|
@@ -242,8 +242,8 @@ describe User do
 
     it 'destroy associated relationships' do
       other_user.follow!(subject)
-      relationships = subject.relationships.dup
-      reverse_relationships = subject.reverse_relationships.dup
+      relationships = subject.relationships.to_a
+      reverse_relationships = subject.reverse_relationships.to_a
       subject.destroy
       expect(relationships).to_not be_empty
       expect(reverse_relationships).to_not be_empty

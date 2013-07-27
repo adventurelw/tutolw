@@ -12,6 +12,13 @@ def valid_sign_in(user)
   #cookies[:remember_token] = user.remember_token
 end
 
+#for sign_in in requests test
+def set_user_cookies(user)
+  remember_token = User.new_remember_token
+  cookies[:remember_token] = remember_token
+  user.update_attribute(:remember_token, User.encrypt(remember_token))
+end
+
 def invalid_sign_in
   visit signin_path
   click_button "登录"
@@ -29,13 +36,13 @@ def fill_in_valid_information_for_sign_up
 end
 
 #for all
-Rspec::Matchers.define :have_error_message do |message|
+RSpec::Matchers.define :have_error_message do |message|
   match do |page|
     expect(page).to have_selector("div.alert.alert-error", text: message)
   end
 end
 
-Rspec::Matchers.define :have_success_message do |message|
+RSpec::Matchers.define :have_success_message do |message|
   match do |page|
     expect(page).to have_selector("div.alert.alert-success", text: message)
   end

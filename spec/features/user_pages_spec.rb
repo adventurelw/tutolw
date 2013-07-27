@@ -70,6 +70,7 @@ feature "User Pages" do
       background { valid_sign_in user }
 
       context 'following a user' do
+        background { visit user_path(other_user) }
         scenario 'increment the followed user count' do
           expect do
             click_button 'Follow'
@@ -84,11 +85,15 @@ feature "User Pages" do
 
         scenario 'togging the button' do
           click_button 'Follow'
-          expect(page).to have_selector('input', value: 'Unfollow')
+          expect(page).to have_xpath("//input[@value='Unfollow']")
         end
       end
 
       context 'unfollowing a user' do
+        background do
+          user.follow!(other_user)
+          visit user_path(other_user)
+        end
         scenario 'decrement the followed user count' do
           expect do
             click_button 'Unfollow'
@@ -103,7 +108,7 @@ feature "User Pages" do
 
         scenario 'togging the button' do
           click_button 'Unfollow'
-          expect(page).to have_selector('input', value: 'Follow')
+          expect(page).to have_xpath("//input[@value='Follow']")
         end
       end
     end
@@ -219,7 +224,7 @@ feature "User Pages" do
         end
 
         scenario 'be able to delete another user' do
-          expect { click_link('delete', href: user_path(User.first)) }.to change(User, :count).by(-1)
+          expect { click_link('delete', match: :first) }.to change(User, :count).by(-1)
         end
       end
     end

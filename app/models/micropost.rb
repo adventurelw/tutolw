@@ -1,6 +1,5 @@
 class Micropost < ActiveRecord::Base
-  include ActiveModel::ForbiddenAttributesProtection
-  default_scope order: 'microposts.created_at DESC'
+  default_scope -> { order('microposts.created_at DESC') }
 
   belongs_to :user
 

@@ -1,6 +1,6 @@
 class RelationshipsController < ApplicationController
   respond_to :html, :js
-  before_filter :unsigned_in_user
+  before_action :unsigned_in_user
   #after_filter :respond_to_page #直接用这个就会出现redirect_to多次的错误
 
   def create
