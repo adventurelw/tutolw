@@ -38,3 +38,7 @@ end
 group :development, :production do
   gem 'pg', '0.16.0'
 end
+
+group :production do
+  gem 'rails_12factor', '0.0.2'
+end
